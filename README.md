@@ -3,18 +3,23 @@
 A simple but comprehensive boilerplate for building AI-powered applications using LangGraph, n8n, and modern development tools.
 
 ## Table of Contents
-- [Features](#features)
-- [Prerequisites](#prerequisites)
-- [Setup](#setup)
-- [Usage](#usage)
-  - [JupyterLab](#jupyterlab)
-  - [LangGraph Studio](#langgraph-studio)
-  - [n8n](#n8n)
-  - [ngrok](#ngrok)
-- [Troubleshooting](#troubleshooting)
-- [Project Structure](#project-structure)
-- [Contributing](#contributing)
-- [Sources](#sources)
+
+- [Osedea Hackathon 2025 Boilerplate](#osedea-hackathon-2025-boilerplate)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Prerequisites](#prerequisites)
+  - [Setup](#setup)
+  - [Usage](#usage)
+    - [JupyterLab](#jupyterlab)
+    - [LangGraph Studio](#langgraph-studio)
+    - [n8n](#n8n)
+    - [ngrok](#ngrok)
+  - [Troubleshooting](#troubleshooting)
+    - [Common Issues](#common-issues)
+    - [Getting Help](#getting-help)
+  - [Project Structure](#project-structure)
+  - [Contributing](#contributing)
+  - [Sources](#sources)
 
 ## Features
 
@@ -41,62 +46,73 @@ Before you begin, ensure you have the following installed:
 ## Setup
 
 1. **Clone the Repository**:
+
    ```bash
    git clone <repository-url>
    cd osedea-hackaton-2025-boilerplate
    ```
 
-2. **Configure Environment Variables**:
+1. **API Keys and Accounts**:
+   - [LangSmith API Key](https://smith.langchain.com/) if you want to use the LangGraph Studio observation tool
+   - [OpenAI API Key](https://platform.openai.com/api-keys) for LLM functionality
+   - [Tavily API Key](https://app.tavily.com/home) for web search capabilities
+   - [n8n Account](https://n8n.io/) for workflow automation (created during the setup of the local docker container, no need to create an account for the cloud version)
+   - [ngrok Account](https://ngrok.com) for HTTPS access
+
+1. **Configure ngrok**:
+   - Create a new domain at [ngrok dashboard](https://dashboard.ngrok.com/domains)
+   - Update `DOMAIN_NAME` (if personal domain name) and `SUBDOMAIN` in your `.env` file
+
+1. **Configure Environment Variables**:
+
    ```bash
    cp .env.example .env
    ```
+
    Edit `.env` with your configuration values.
 
-3. **Required API Keys and Accounts**:
-   - [OpenAI API Key](https://platform.openai.com/api-keys) for LLM functionality
-   - [Tavily API Key](https://app.tavily.com/home) for web search capabilities
-   - [n8n Account](https://n8n.io/) for workflow automation
-   - [ngrok Account](https://ngrok.com) for HTTPS access
-
-4. **Configure ngrok**:
-   - Create a new domain at [ngrok dashboard](https://dashboard.ngrok.com/domains)
-   - Update `DOMAIN_NAME` and `SUBDOMAIN` in your `.env` file
+   You can keep the PostgreSQL credentials as they are, but you can also change them if you want to use your own PostgreSQL instance.
 
 ## Usage
 
 ### JupyterLab
 
-1. Start the devcontainer in VSCode (should be asked while opening the folder with the devcontainer extension)
-2. Open a terminal (in VSCode) and run:
+1. Start the devcontainer in VSCode. Should be asked while opening the folder with the devcontainer extension, if not, you can do it manually by clicking on the green icon in the bottom left corner of VSCode and selecting "Reopen in Container". If you have permission issues, you can try to uncomment the `remoteUser` line in the `.devcontainer/devcontainer.json` file.
+1. Open a terminal (in VSCode) and run:
+
    ```bash
    jupyter notebook
    ```
-3. Check the URL of the JupyterLab instance in the terminal output (should be something like `http://localhost:8888/?token=<token>`)
+
+1. Check and use the URL of the JupyterLab instance in the terminal output (should be something like `http://localhost:8888/?token=<token>`)
 
 ### LangGraph Studio
 
 1. Navigate to the studio directory:
+
    ```bash
    cd studio
    ```
 
-2. Configure studio environment:
+1. Configure studio environment:
+
    ```bash
    cp .env.example .env
    # Edit .env with your configuration
    ```
 
-3. Start the LangGraph development server:
+1. Start the LangGraph development server:
+
    ```bash
    langgraph dev
    ```
 
-4. Access the following endpoints:
+1. Access the following endpoints:
    - [Studio Interface](https://smith.langchain.com/studio/?baseUrl=http://127.0.0.1:2024)
    - [API Documentation](http://127.0.0.1:2024/docs)
    - [API Base URL](http://127.0.0.1:2024)
 
-5. Test the system:
+1. Test the system:
    - Open the Studio interface
    - Locate the `test_tavili_wikipedia` graph
    - Enter a question in the Input section. Example: "What is the ancient name of Baghdad?"
@@ -104,12 +120,13 @@ Before you begin, ensure you have the following installed:
 
 ### n8n
 
-1. Start the services:
+1. Start the services (not from the devcontainer):
+
    ```bash
    docker compose up -d
    ```
 
-2. Access n8n:
+1. Access n8n:
    - Open [http://localhost:5678](http://localhost:5678)
    - Create an admin account (you can keep the same credentials for the local instance to receive the activation key)
    - Configure and test workflows
@@ -119,11 +136,12 @@ Before you begin, ensure you have the following installed:
 HTTPS is mandatory for calling other services: Google, Discord, etc. and to receive webhooks. ngrok will provide a secure URL to access the local instance.
 
 1. Start ngrok with your domain:
+
    ```bash
    ngrok http --url=your-domain.ngrok-free.app 5678
    ```
 
-2. Use the HTTPS URL to access n8n securely.
+1. Use the HTTPS URL to access n8n securely.
 
 ## Troubleshooting
 
@@ -133,6 +151,7 @@ HTTPS is mandatory for calling other services: Google, Discord, etc. and to rece
    - Ensure Docker is running
    - Try rebuilding the container: `F1 > Dev Containers: Rebuild Container`
    - Check VSCode logs for detailed error messages
+   - On permission issues, you can try to uncomment the `remoteUser` line in the `.devcontainer/devcontainer.json` file
 
 2. **API Connection Issues**:
    - Verify API keys in `.env` files
